@@ -1,0 +1,18 @@
+{
+  "name": "@timurxyz/decoratorf",
+  "version": "0.0.0",
+  "description": "",
+  "repository": "git@github.com:timurxyz/decoratorf.git",
+  "author": "timur x <x@secdev.eu>",
+  "license": "MIT",
+  "dependencies": {
+  },
+  "devDependencies": {
+  },
+  "scripts": {
+    "build:github": "env NPM_CONFIG_REGISTRY='https://npm.pkg.github.com/@timurxyz' ng-packagr -p ./src.decoratorf/package.json",
+    "build:npmjs": "env NPM_CONFIG_REGISTRY='https://registry.npmjs.org' ng-packagr -p ./src.decoratorf/package.json",
+    "publish:github": "env NPM_CONFIG_REGISTRY='https://npm.pkg.github.com/@timurxyz' npm publish ./src.decoratorf/dist --access public",
+    "publish:npmjs": "env NPM_CONFIG_REGISTRY='https://registry.npmjs.org' npm publish ./src.decoratorf/dist --access public"
+  }
+}

@@ -1,0 +1,22 @@
+{
+    "name": "decoratorf",
+    "version": "0.9.0-aa",
+    "description": "",
+    "repository": "git@github.com:timurxyz/decoratorf.git",
+    "author": "timur x <x@secdev.eu>",
+    "license": "MIT",
+    "$schema": "../node_modules/ng-packagr/package.schema.json",
+    "ngPackage": {
+        "lib": {
+            "entryFile": "public_api.ts"
+        },
+        "assets": [ "../README.md" ],
+        "dest": "./dist",
+        "whitelistedNonPeerDependencies": [
+            "."
+        ]
+    },
+    "peerDependencies": {
+    },
+    "main": "lib/index.ts"
+}
