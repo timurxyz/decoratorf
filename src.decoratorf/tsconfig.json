@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/",
+    "composite": true,
+    "sourceMap": true,
+    "declaration": true,
+    "experimentalDecorators": true,
+    "target": "es6",
+    "lib": ["es2020", "dom"],
+    "module": "esnext",
+    "esModuleInterop": true
+  },
+  
+}

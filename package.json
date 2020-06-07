@@ -8,11 +8,19 @@
   "dependencies": {
   },
   "devDependencies": {
+    "@types/node": ">=12.11.0",
+    "@typescript-eslint/eslint-plugin": ">2.30.0",
+    "@typescript-eslint/parser": ">2.30.0",
+    "eslint": ">6.0.0",
+    "ng-packagr": ">=9",
+    "ts-node": ">=8 || >=9",
+    "typescript": "<3.9.0"
   },
   "scripts": {
     "build:github": "env NPM_CONFIG_REGISTRY='https://npm.pkg.github.com/@timurxyz' ng-packagr -p ./src.decoratorf/package.json",
     "build:npmjs": "env NPM_CONFIG_REGISTRY='https://registry.npmjs.org' ng-packagr -p ./src.decoratorf/package.json",
     "publish:github": "env NPM_CONFIG_REGISTRY='https://npm.pkg.github.com/@timurxyz' npm publish ./src.decoratorf/dist --access public",
-    "publish:npmjs": "env NPM_CONFIG_REGISTRY='https://registry.npmjs.org' npm publish ./src.decoratorf/dist --access public"
+    "publish:npmjs": "env NPM_CONFIG_REGISTRY='https://registry.npmjs.org' npm publish ./src.decoratorf/dist --access public",
+    "tsc:github": "env NPM_CONFIG_REGISTRY='https://npm.pkg.github.com/@timurxyz' tsc -p src.decoratorf/tsconfig.json"
   }
 }
