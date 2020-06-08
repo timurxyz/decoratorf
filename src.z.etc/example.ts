@@ -1,23 +1,20 @@
 import {OnDestroy, OnInit} from '@angular/core';
 import {Subject} from 'rxjs';
 
-import {Constructable, makeDecorator, makeParent, MixinLambda} from 'decoratord.factory'
+import {Constructable, makeDecorator, makeParent, AnyMixinLambda} from 'decoratorf'
 
-// tslint:disable-next-line:no-empty-interface
 interface IHasInit extends OnInit {}
-// tslint:disable-next-line:no-empty-interface
 interface IHasDestroy extends OnDestroy {}
 interface IHasInitAndDestroy extends OnInit, OnDestroy {}
 
-
 // Sample payload mixin lambda
-const LHasSubscriptionCollector: MixinLambda<any> =
+const LHasSubscriptionCollector: AnyMixinLambda =
   <HC extends Constructable<IHasInitAndDestroy>>( HostClass: HC) => class extends HostClass implements IHasInitAndDestroy
   {
 
     ngUnsubscribe = new Subject<void>();
 
-    // constructor(
+    // constructor(       // Not usable in Angular in case of decorators due to the injection trickery
     //   ...param: any[]
     // ) {
     //   super(...param);
