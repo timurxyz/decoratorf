@@ -10,6 +10,5 @@
     "lib": ["es2020", "dom"],
     "module": "esnext",
     "esModuleInterop": true
-  },
-  
+  }
 }
