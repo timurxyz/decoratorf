@@ -47,6 +47,7 @@ https://dev.to/angular/decorators-do-not-work-as-you-might-expect-3gmj
 https://stackoverflow.com/questions/29879267/es6-class-multiple-inheritance
 https://www.bryntum.com/blog/the-mixin-pattern-in-typescript-all-you-need-to-know/
 https://stackoverflow.com/questions/34411546/how-to-properly-wrap-constructors-with-decorators-in-typescript
+https://github.com/microsoft/TypeScript/issues/19788
 
 import {OnDestroy, OnInit} from '@angular/core';
 import {Subject} from 'rxjs';
