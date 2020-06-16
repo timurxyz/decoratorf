@@ -1,7 +1,7 @@
 
 export type Mixin<T extends AnyFunction> = InstanceType<ReturnType<T>>;
 //export type MixinLambda<HC extends PreMixin, PreMixin = ZeroBaseClass> = (base: HC) => Class<HC>;
-export type MixinLambda<HC> = (base: HC) => Class<HC>;
+export type MixinLambda<HC> = (base: HC, ...params: any[]) => Class<HC>;
 export type AnyMixinLambda = MixinLambda<any>;
 export type MixinLambdaPrefix<HC> = HC;
 
