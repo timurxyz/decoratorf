@@ -1,8 +1,5 @@
 import {MixinLambda, Class, ZeroBaseClass, HasConstructor, HasAnyFunction} from './decorator.types'
 
-interface ExtendedClass<HC> extends Class<HC> {
-    dfOnConstructorTime( that: Class<HC>): void;
-  };
 
 // Extendable class version
 export const makeParent = ( payloadLambda: MixinLambda<any>) =>
@@ -33,9 +30,15 @@ export const extendClass = <HC>(
 
 export const extendAndCallDfOnConstructorTime = <HC>(
   extendedClass: Class<HC>) => {
+
+  interface ExtendedClass<HC> extends Class<HC> {
+    dfOnConstructorTime( that: Class<HC>): void;
+  };
+
   ( extendedClass as ExtendedClass<HC>).dfOnConstructorTime?.( extendedClass);
   return extendedClass;
 }
+
 
 
 
