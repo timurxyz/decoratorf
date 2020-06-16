@@ -5,11 +5,8 @@ interface ExtendedClass<HC> extends Class<HC> {
   };
 
 // Extendable class version
-export const makeParent = ( payloadLambda: MixinLambda<any>) => { 
-  const extendedClass = class extends payloadLambda( ZeroBaseClass) {} as ExtendedClass<any>;
-  extendedClass.dfOnConstructorTime?.( extendedClass);
-  return extendedClass;
-}
+export const makeParent = ( payloadLambda: MixinLambda<any>) =>
+  extendAndCallDfOnConstructorTime( class extends payloadLambda( ZeroBaseClass) {});
 
 // Decorator version
 export function makeDecorator<HC>(
@@ -25,9 +22,7 @@ export const DecoratorFactory = <HC>(payloadLambda: MixinLambda<HC>) => () => {
   // a decorator mixin
   return function TypeDecorator(
     hostClass: HC) {
-    const extendedClass = extendClass<HC>( hostClass, payloadLambda) as ExtendedClass<HC>;
-    extendedClass.dfOnConstructorTime?.( extendedClass);
-    return extendedClass;
+    return extendAndCallDfOnConstructorTime( extendClass<HC>( hostClass, payloadLambda));
   }
 }
 
@@ -35,6 +30,12 @@ export const extendClass = <HC>(
   Base : HC,
   mixinLambda: MixinLambda<HC> )
   : Class<HC> => mixinLambda( Base);
+
+export const extendAndCallDfOnConstructorTime = <HC>(
+  extendedClass: Class<HC>) => {
+  ( extendedClass as ExtendedClass<HC>).dfOnConstructorTime?.( extendedClass);
+  return extendedClass;
+}
 
 
 
