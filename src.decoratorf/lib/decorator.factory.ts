@@ -1,17 +1,5 @@
 import {MixinLambda, Class, ZeroBaseClass, HasConstructor, HasAnyFunction} from './decorator.types'
 
-export type PreInstantiationProcessing<HC> = (that: Class<HC>, ...params: any[]) => void;
-export abstract class HasPreInstantiationProcessing<HC> { 
-    // Allows to perform some pseudo-constructor coding even in Angular (at least <=9)
-    // which won't work with custom decorators containing constructors 
-    // (in a non-Angular situation you can inplement constructors in decorators).
-    // Add this to your decorator class though this won't see your decorator/superclass/HostClass instantiated
-    // as this runs before real constructing takes place, hense static (and 'that' refers to a class not instance).
-    static preInstantiationProcessing: PreInstantiationProcessing<any>; 
-  }
-interface MayHavePreInstantiationProcessing<HC> { preInstantiationProcessing?: PreInstantiationProcessing<HC>; }
-interface ExtendedClass<HC> extends Class<HC>, MayHavePreInstantiationProcessing<HC> {};
-
 // Extendable class version
 export const makeParent = ( 
   payloadLambda: MixinLambda<any>, 
@@ -40,17 +28,23 @@ export const DecoratorFactory = <HC>(
   }
 
 export const extendClass = <HC>(
-  Base : HC,
+  Base: HC,
   mixinLambda: MixinLambda<HC> )
   : Class<HC> => mixinLambda( Base);
 
 export const extendAndCallDfOnConstructorTime = <HC>(
   extendedClass: Class<HC>,
   ...params: any[]) => {
-  ( extendedClass as ExtendedClass<HC>).preInstantiationProcessing?.( extendedClass, ...params);
+  ( extendedClass as ExtendedClass<HC>).boottimeClassProcessing?.( extendedClass, ...params);
   return extendedClass;
 }
 
-
-
-
+// optional:
+export type BoottimeClassProcessing<HC> = (classSignature: Class<HC>, ...params: any[]) => void;
+export abstract class HasBoottimeClassProcessing<HC> {
+    // Allows to perform bootstrap-time class processing.
+    // ...params will come from the decorator/class configuration ...params .
+    static boottimeClassProcessing: BoottimeClassProcessing<any>; 
+  }
+interface MayHaveBoottimeClassProcessing<HC> { boottimeClassProcessing?: BoottimeClassProcessing<HC>; }
+interface ExtendedClass<HC> extends Class<HC>, MayHaveBoottimeClassProcessing<HC> {};
