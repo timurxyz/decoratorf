@@ -2,6 +2,11 @@ import {MixinLambda, Class, ZeroBaseClass, HasConstructor, HasAnyFunction} from 
 
 export type PreInstantiationProcessing<HC> = (that: Class<HC>, ...params: any[]) => void;
 export abstract class HasPreInstantiationProcessing<HC> { 
+    // Allows to perform some pseudo-constructor coding even in Angular (at least <=9)
+    // which won't work with custom decorators containing constructors 
+    // (in a non-Angular situation you can inplement constructors in decorators).
+    // Add this to your decorator class though this won't see your decorator/superclass/HostClass instantiated
+    // as this runs before real constructing takes place, hense static (and 'that' refers to a class not instance).
     static preInstantiationProcessing: PreInstantiationProcessing<any>; 
   }
 interface MayHavePreInstantiationProcessing<HC> { preInstantiationProcessing?: PreInstantiationProcessing<HC>; }
