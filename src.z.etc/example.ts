@@ -1,18 +1,23 @@
 import {OnDestroy, OnInit} from '@angular/core';
 import {Subject} from 'rxjs';
 
-import {Constructable, makeDecorator, makeParent, AnyMixinLambda} from 'decoratorf'
+import {makeDecorator, makeParent, HasPreInstantiationProcessing, PreInstantiationProcessing, Class, AnyMixinLambda, Constructable} from 'decoratorf'
 
-interface IHasInit extends OnInit {}
-interface IHasDestroy extends OnDestroy {}
-interface IHasInitAndDestroy extends OnInit, OnDestroy {}
+interface HasInit extends OnInit {}
+interface HasDestroy extends OnDestroy {}
+interface HasInitAndDestroy extends OnInit, OnDestroy {}
 
 // Sample payload mixin lambda
 const LHasSubscriptionCollector: AnyMixinLambda =
-  <HC extends Constructable<IHasInitAndDestroy>>( HostClass: HC) => class extends HostClass implements IHasInitAndDestroy
+  <HC extends Constructable<HasInitAndDestroy>>( HostClass: Class<HC>) =>
+    class extends HostClass implements HasInitAndDestroy, HasPreInstantiationProcessing<HC>
   {
 
     ngUnsubscribe = new Subject<void>();
+
+    static preInstantiationProcessing(that: HC, ...params: any[]): void {
+      console.warn('preInstantiation BB:Unsubscribe', that, ...params);
+    }
 
     // constructor(       // Not usable in Angular in case of decorators due to the injection trickery
     //   ...param: any[]
