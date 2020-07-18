@@ -5,3 +5,4 @@
 /src.decoratorf/dist
 *.log
 *.lock
+.idea

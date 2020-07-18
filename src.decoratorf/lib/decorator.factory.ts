@@ -5,7 +5,9 @@ export const makeParent = (
   payloadLambda: MixinLambda<any>, 
   ...params: any[]
   ) =>
-  extendAndCallDfOnConstructorTime( class extends payloadLambda( ZeroBaseClass) {}, ...params);
+  extendAndCallDfOnConstructorTime( 
+    class extends payloadLambda( ZeroBaseClass) {}, 
+    ...params);
 
 // Decorator version
 export const makeDecorator = <HC>(
@@ -24,7 +26,9 @@ export const DecoratorFactory = <HC>(
   // a decorator mixin
   function TypeDecorator(
     hostClass: HC) {
-    return extendAndCallDfOnConstructorTime( extendClass<HC>( hostClass, payloadLambda), ...params);
+    return extendAndCallDfOnConstructorTime( 
+      extendClass<HC>( hostClass, payloadLambda), 
+      ...params);
   }
 
 export const extendClass = <HC>(
