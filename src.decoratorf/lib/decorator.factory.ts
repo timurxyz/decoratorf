@@ -22,10 +22,10 @@ export const makeDecorator = <HC>(
 export const DecoratorFactory = <HC>( 
   payloadLambda: MixinLambda<HC>, 
   ...params: any[]
-  ) => () => 
+  ) => 
     // a decorator mixin
     function TypeDecorator(
-      hostClass: HC) {
+      hostClass: HC): Class<HC> {
       return extendAndCallDfOnConstructorTime(
         extendClass<HC>( hostClass, payloadLambda, ...params),
         ...params);
