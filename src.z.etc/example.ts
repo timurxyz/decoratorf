@@ -1,7 +1,11 @@
 import {OnDestroy, OnInit} from '@angular/core';
 import {Subject} from 'rxjs';
 
-import {makeDecorator, makeParent, HasPreInstantiationProcessing, PreInstantiationProcessing, Class, AnyMixinLambda, Constructable} from 'decoratorf'
+import {makeDecorator, makeParent, HasBoottimeClassProcessing, Class, AnyMixinLambda, Constructable} from 'decoratorf'
+
+// export abstract class HasBoottimeClassProcessing<HC> {
+//   static boottimeClassProcessing: BoottimeClassProcessing<any>;
+// }
 
 interface HasInit extends OnInit {}
 interface HasDestroy extends OnDestroy {}
@@ -9,46 +13,54 @@ interface HasInitAndDestroy extends OnInit, OnDestroy {}
 
 // Sample payload mixin lambda
 const LHasSubscriptionCollector: AnyMixinLambda =
-  <HC extends Constructable<HasInitAndDestroy>>( HostClass: Class<HC>) =>   // VSC likes it as Class, Webstorm as HC
-    class extends HostClass implements HasInitAndDestroy, HasPreInstantiationProcessing<HC>
-  {
+    <HC extends Constructable<HasInitAndDestroy>>( HostClass: Class<HC>, ...params) =>
+        //@ts-ignore
+        class HasSubscriptionCollector extends HostClass
+            implements HasInitAndDestroy, HasBoottimeClassProcessing<HC>
+        {
 
-    ngUnsubscribe = new Subject<void>();
+          static boottimeClassProcessing( classSignature: HC, ...params: any[]): void {
+            console.warn('boottimeClassProcessing BB:Unsubscribe', classSignature, ...params);
+          }
 
-    static preInstantiationProcessing(that: HC, ...params: any[]): string|void {
-      const id = Math.round(Math.random() * 10000000).toString(16);
-      console.warn('preInstantiation BB:Unsubscribe', id, that, ...params);
-      return id;
-    }
+          ngUnsubscribe = new Subject<void>();
 
-    goo = LHasSubscriptionCollector.preInstantiationProcessing(this);
+          meName = this.constructor.name + ' (this) and ' + (super.constructor != undefined? super.constructor.name + ' (sup)': 'no sup');
+          hello = 'Hello, Ludwig Wittgenstein aka ' + this.meName;
 
-    // constructor(       // Not usable in Angular in case of decorators due to the injection trickery
-    //   ...param: any[]
-    // ) {
-    //   super(...param);
-    // }
+          private pseudoConstructor(): string {
+            console.warn('pseudoConstructor BB:Unsubscribe, hello: ', this.hello, ', me name: ', this.helloPost, ...params);
+            return 'sse';
+          }
+          private pseudoConstructorCaller = this.pseudoConstructor();
 
-    ngOnInit(): void {
+          helloPost = 'Hello, Winnie (the Pooh) aka' + this.meName;
+          // constructor(       // Not usable in Angular in case of decorators due to the injection trickery
+          //   ...param: any[]
+          // ) {
+          //   super(...param);
+          // }
 
-      console.warn('init BB:Unsubscribe', this.goo);
-      if (super.ngOnInit !== undefined) {
-        console.warn('init BB:Unsubscribe super called');
-        super.ngOnInit();
-      }
-    }
+          ngOnInit(): void {
 
-    ngOnDestroy(): void {
-      if (super.ngOnDestroy !== undefined) {
-        console.warn('destroy BB:Unsubscribe super called');
-        super.ngOnDestroy();
-      }
+            console.warn('init BB:Unsubscribe');
+            if (super.ngOnInit !== undefined) {
+              console.warn('init BB:Unsubscribe super called');
+              super.ngOnInit();
+            }
+          }
 
-      console.warn('destroy BB:Unsubscribe');
-      this.ngUnsubscribe.next();
-      this.ngUnsubscribe.complete();
-    }
-  }
+          ngOnDestroy(): void {
+            if (super.ngOnDestroy !== undefined) {
+              console.warn('destroy BB:Unsubscribe super called');
+              super.ngOnDestroy();
+            }
+
+            console.warn('destroy BB:Unsubscribe');
+            this.ngUnsubscribe.next();
+            this.ngUnsubscribe.complete();
+          }
+        }
 
 
 export const HasSubscriptionCollector = makeDecorator( LHasSubscriptionCollector);
