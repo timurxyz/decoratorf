@@ -6,7 +6,7 @@ export const makeParent = (
   ...params: any[]
   ) =>
     extendAndCallDfOnConstructorTime(
-      class extends payloadLambda( ZeroBaseClass) {},
+      class extends payloadLambda( ZeroBaseClass) { constructor(...args: any[]) { super(...args); }},
       ...params);
 
 // Decorator version
